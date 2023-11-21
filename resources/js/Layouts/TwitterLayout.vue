@@ -18,14 +18,16 @@ let textarea = ref(null)
 let showUpload = ref('')
 let uploadType = ref('')
 let tweet = ref('')
+let file = ref('')
 let randImg1 = ref(`https://picsum.photos/id/${(Math.random() * 200).toFixed(0)}/100`)
 let randImg2 = ref(`https://picsum.photos/id/${(Math.random() * 200).toFixed(0)}/100`)
 
 const getFile = (e) => {
-    File.value = e.target.files[0]
+    file.value = e.target.files[0]
     showUpload.value = URL.createObjectURL(e.target.files[0]);
     uploadType.value = file.value.name.split('.').pop();
 }
+
 
 const closeMessageBox = () => {
     createTweet.value = false
@@ -47,9 +49,12 @@ const addTweet = () => {
     data.append('tweet', tweet.value)
     data.append('file', file.value)
 
-    router.post('/tweets', data)
+
+  router.post('/tweets', data)
+
 
     closeMessageBox()
+
 }
 
 </script>
@@ -255,8 +260,8 @@ const addTweet = () => {
                             ></textarea>
                     </div>
                     <div class="w-full">
-                        <video src="showUpload" controls v-if="uploadType === 'mp4'"  class="rounded-xl overflow-auto"/>
-                        <img v-else :src="showUpload" class="rounded-xl min-w-full"/>
+                        <video controls v-if="uploadType === 'mp4'" :src="showUpload" class="rounded-xl overflow-auto"/>
+                        <img v-else :src="showUpload" class="rounded-xl min-w-full" controls>
                     </div>
                     <div class="flex py-2 items-center text-[#1C9CEF] font-extrabold">
                         <Earth class="pr-2" fillColor="#1C9CEF" :size="20"/> Tutti possono rispondere
@@ -278,10 +283,10 @@ const addTweet = () => {
                             </div>
                         </div>
                         <button 
+                            @click="addTweet()"
                             :disabled="!tweet"
                             :class="tweet ? 'bg-[#1C9CEF] text-white' : 'bg-[#125D77] text-gray-400'"
                             class="hidden md:block font-extrabold text-[16px] p-1.5 px-4 rounded-full cursor-pointer"
-                            @click="addTweet()"
                         >
                             Tweet
                         </button>

@@ -21,7 +21,7 @@ class TweetController extends Controller
         $extension = null;
         $fileName = null;
         $path = null;
-
+        
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $request->validate(['file' => 'required|mimes:jpg,jpeg,png,mp4']);
@@ -47,8 +47,8 @@ class TweetController extends Controller
 
         $tweet->save();
 
-        return redirect()->route('welcome');
     }
+    
 
     public function destroy($id)
     {
